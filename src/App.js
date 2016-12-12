@@ -4,6 +4,19 @@ import RepCount from './components/repcount/RepCount';
 import Rest from './components/rest/Rest';
 import Report from './components/report/Report';
 import Congrats from './components/congrats/Congrats';
+import $ from 'jquery';
+
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
+const baseUrl = 'http://localhost:3000/api/users/';
+
+// async function getTraining(day) {
+//   const response = await fetch(baseUrl + '?day=' + day);
+//   if (response.status >= 400 ) throw Error('can not get training programm');
+//   const programm = await response.json();
+//   return programm;
+// }
 
 class App extends Component {
   
@@ -12,12 +25,24 @@ class App extends Component {
   constructor() {
     super();
     
-    this.state = {screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
+    this.state = {asyncGet: 'd', screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
     this.handleClick = this.handleClick.bind(this);
     this.handleReport = this.handleReport.bind(this);
     this.handleCongrats = this.handleCongrats.bind(this);
     this.nextRep = this.nextRep.bind(this);
     }
+
+  componentDidMount() {
+    const that = this;
+    $.get(baseUrl, function(result) {
+      const programm = result;
+      that.setState({
+        asyncGet: programm
+      });
+    });
+
+    //this.setState({workout: [{reps:66,rest:2}]});
+  }
   
   handleClick(event) {
     if(event.target.dataset.success === "1") {
@@ -86,7 +111,7 @@ class App extends Component {
           {this.renderScreen(this.state.screen)}
         </p>
         <p className="Rep-count">
-          
+          {this.state.asyncGet}  
         </p>
       </div>
     );
