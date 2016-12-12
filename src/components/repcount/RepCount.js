@@ -5,7 +5,8 @@ class RepCount extends React.Component {
     return (
     <div>
     <div key="1">
-      <button onClick={this.props.onClick}>Щелкай</button>
+      <button data-success="1" onClick={this.props.onClick}>Получилось</button>
+      <button data-success="0" onClick={this.props.onClick}>Пока нет</button>
     </div> 
     <div key="2">
       {this.props.reps}
