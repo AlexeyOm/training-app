@@ -5,6 +5,7 @@ import Rest from './components/rest/Rest';
 import Report from './components/report/Report';
 import Congrats from './components/congrats/Congrats';
 import $ from 'jquery';
+import { Grid, Col, Navbar, Jumbotron} from 'react-bootstrap';
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -73,6 +74,7 @@ class App extends Component {
       this.setState({screen: 'congrats'});
     }
     else {
+      alert(event.target.form.repnum.value);
       this.setState({screen: 'rest'});
     }
   }
@@ -106,13 +108,24 @@ class App extends Component {
   
   render() {
     return (
-      <div className="App">
-        <p>
-          {this.renderScreen(this.state.screen)}
-        </p>
-        <p className="Rep-count">
-          {this.state.asyncGet}  
-        </p>
+      <div>
+        <Navbar inverse fixedTop>
+           <Grid>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <a href="/">React App</a>
+              </Navbar.Brand>
+              <Navbar.Toggle />
+            </Navbar.Header>
+          </Grid>
+        </Navbar>
+          <Jumbotron>
+                <Grid>
+                  <Col xs={12} md={4} mdOffset={4}>
+                    {this.renderScreen(this.state.screen)}  
+                  </Col>
+                </Grid>
+          </Jumbotron>
       </div>
     );
   }

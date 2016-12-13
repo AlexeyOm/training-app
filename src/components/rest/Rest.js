@@ -1,4 +1,5 @@
 import React from 'react';
+import './Rest.css'
 
 class Rest extends React.Component {
   constructor(props){
@@ -28,12 +29,9 @@ class Rest extends React.Component {
   render () {
     return (
     <div>
-      <div key="1">
-        Отдохни {this.state.restTime} сек
-      </div> 
-      <div key="2">
-     
-      </div> 
+      <h2>Отдохни</h2>
+      <h1>{this.state.restTime}</h1>
+      <h2>сек</h2>
     </div>
       
     );

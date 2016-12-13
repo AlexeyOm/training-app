@@ -1,11 +1,19 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
+import './Congrats.css';
 
 class Congrats extends React.Component {
   render () {
     return (
     <div>
-      Поздравляю! Тренировка закончена!
-      <button data-success="0" onClick={this.props.onClick}>ОК</button>
+      <h1>Поздравляю! Тренировка закончена!</h1>
+      <Button
+          bsStyle="success"
+          bsSize="large"
+          block
+          onClick={this.props.onClick}>
+            Отлично
+        </Button>  
     </div>
       
     );
