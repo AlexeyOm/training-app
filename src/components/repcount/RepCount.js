@@ -12,13 +12,18 @@ class RepCount extends React.Component {
   // }
 
   render () {
+
     return (
     <div>
       <div key="2">
         <h2>Нужно сделать</h2>
-        <h1>{this.props.reps}</h1>
+        {this.props.test && <h2>как можно больше, не менее</h2> }
+        <h1>
+          {this.props.reps}
+        </h1>
         <h2>повторов</h2>
-      </div> 
+      </div>
+
       <div key="1">
         <Button
           bsStyle="success"

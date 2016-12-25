@@ -26,7 +26,7 @@ class App extends Component {
   constructor() {
     super();
     
-    this.state = {asyncGet: 'd', screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
+    this.state = {serverReply: [], screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
     this.handleClick = this.handleClick.bind(this);
     this.handleReport = this.handleReport.bind(this);
     this.handleCongrats = this.handleCongrats.bind(this);
@@ -36,9 +36,8 @@ class App extends Component {
   componentDidMount() {
     const that = this;
     $.get(baseUrl, function(result) {
-      const programm = result;
       that.setState({
-        asyncGet: programm
+        workout: result
       });
     });
 
@@ -74,7 +73,7 @@ class App extends Component {
       this.setState({screen: 'congrats'});
     }
     else {
-      alert(event.target.form.repnum.value);
+      //alert(event.target.form.repnum.value);
       this.setState({screen: 'rest'});
     }
   }
@@ -83,11 +82,15 @@ class App extends Component {
     //todo делать что-то по завершению тренировки
   }
   
-  getReps(set){
+  getReps(){
     return this.state.workout[this.state.set].reps;
   }
+
+  isTest(){
+    return this.state.workout[this.state.set].test;
+  }
   
-  getRestTime(set){
+  getRestTime(){
     return this.state.workout[this.state.set].rest;
   }
   
@@ -98,8 +101,8 @@ class App extends Component {
   renderScreen(screen) {
     //alert(screen);
     switch(screen) {
-      case 'repetition' : return <RepCount reps={this.getReps(this.state.set)} onClick={this.handleClick}/>;
-      case 'rest' : return <Rest restTime={this.getRestTime(this.state.set)} onTimer={this.nextRep}/>;
+      case 'repetition' : return <RepCount reps={this.getReps()} test={this.isTest()} onClick={this.handleClick}/>;
+      case 'rest' : return <Rest restTime={this.getRestTime()} onTimer={this.nextRep}/>;
       case 'report' : return <Report onClick={this.handleReport}/>;
       case 'congrats' : return <Congrats onClick={this.handleCongrats}/>;
       default : return <div>default</div>;
@@ -120,7 +123,7 @@ class App extends Component {
           </Grid>
         </Navbar>
           <Jumbotron>
-                <Grid>
+                <Grid key="1">
                   <Col xs={12} md={4} mdOffset={4}>
                     {this.renderScreen(this.state.screen)}  
                   </Col>

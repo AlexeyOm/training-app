@@ -8,7 +8,7 @@ class Rest extends React.Component {
   }
   
   decreaseTimeLeft() {
-      if(this.state.restTime === 0) {
+      if(this.state.restTime === 1) {
           this.props.onTimer();
           return 0;
       }

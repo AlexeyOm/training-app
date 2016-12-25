@@ -1,14 +1,17 @@
 import React from 'react';
 import { Button, Form, FormControl } from 'react-bootstrap';
+import './Report.css'
 
 class Report extends React.Component {
   render () {
     return (
     <div>
+      <h2>
+        Сколько получилось?
+      </h2>
       <Form>
         <FormControl
           type="number"
-          label="Сколько получилось?"
           id="repnum"
           autoFocus="true"
         />
