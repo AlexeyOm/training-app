@@ -4,6 +4,7 @@ import RepCount from './components/repcount/RepCount';
 import Rest from './components/rest/Rest';
 import Report from './components/report/Report';
 import Congrats from './components/congrats/Congrats';
+import Login from './components/login/Login';
 import $ from 'jquery';
 import { Grid, Col, Navbar, Jumbotron} from 'react-bootstrap';
 
@@ -26,10 +27,11 @@ class App extends Component {
   constructor() {
     super();
     
-    this.state = {serverReply: [], screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
+    this.state = {serverReply: [], screen : 'login', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
     this.handleClick = this.handleClick.bind(this);
     this.handleReport = this.handleReport.bind(this);
     this.handleCongrats = this.handleCongrats.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
     this.nextRep = this.nextRep.bind(this);
     }
 
@@ -73,9 +75,13 @@ class App extends Component {
       this.setState({screen: 'congrats'});
     }
     else {
-      //alert(event.target.form.repnum.value);
+      //0*alert(event.target.form.repnum.value);
       this.setState({screen: 'rest'});
     }
+  }
+
+  handleLogin(event) {
+    //todo делать что-то по нажатию кнопки "логин"
   }
   
   handleCongrats(event) {
@@ -101,6 +107,7 @@ class App extends Component {
   renderScreen(screen) {
     //alert(screen);
     switch(screen) {
+      case 'login' : return <Login onClick={this.handleLogin}/>;
       case 'repetition' : return <RepCount reps={this.getReps()} test={this.isTest()} onClick={this.handleClick}/>;
       case 'rest' : return <Rest restTime={this.getRestTime()} onTimer={this.nextRep}/>;
       case 'report' : return <Report onClick={this.handleReport}/>;
@@ -116,7 +123,7 @@ class App extends Component {
            <Grid>
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="/">React App</a>
+                <a href="/">Push Harder App</a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
