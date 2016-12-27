@@ -1,16 +1,18 @@
 import React from 'react';
 import { Button, Form, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
-import './Login.css'
+import './Login.css';
+import $ from 'jquery';
 
 
-
+//const baseUrl = 'http://localhost:3000/api/login/';
 
 class Login extends React.Component {
   
   constructor() {
     super();
-    this.state = {login : '', password : ''};
+    this.state = {login : '', password : '', correctCredentials : false};
     this.handleChange = this.handleChange.bind(this);
+    this.checkCredentials = this.checkCredentials.bind(this);
     }
 
 
@@ -24,6 +26,31 @@ class Login extends React.Component {
     let temp = {};
     temp[e.target.name] = e.target.value;
     this.setState(temp);
+  }
+
+  checkCredentials(e) {
+
+    //alert('enterede checkCredentials');
+
+    //e.preventDefault();
+
+    //const that = this;
+
+    //alert(this.state.login);
+
+    const credentials = { login : this.state.login, password : this.state.password };
+
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:3000/api/login/",
+      data: JSON.stringify(credentials),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){alert(data);},
+      failure: function(errMsg) {
+          alert(errMsg);
+      }
+    });
   }
 
 
@@ -62,7 +89,7 @@ class Login extends React.Component {
             bsStyle="success"
             bsSize="large"
             block
-            onClick={this.props.onClick}>
+            onClick={this.checkCredentials}>
               Начать
           </Button>
         </FormGroup>
@@ -73,4 +100,15 @@ class Login extends React.Component {
   }
 }
 
+
+
 export default Login;
+
+// кнопка
+// <Button
+//             bsStyle="success"
+//             bsSize="large"
+//             block
+//             onClick={this.props.onClick}>
+//               Начать
+//           </Button>
