@@ -5,6 +5,7 @@ import Rest from './components/rest/Rest';
 import Report from './components/report/Report';
 import Congrats from './components/congrats/Congrats';
 import Login from './components/login/Login';
+import Register from './components/register/Register';
 import $ from 'jquery';
 import { Grid, Col, Navbar, Jumbotron} from 'react-bootstrap';
 
@@ -27,7 +28,7 @@ class App extends Component {
   constructor() {
     super();
     
-    this.state = {serverReply: [], screen : 'login', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
+    this.state = {serverReply: [], screen : 'register', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
     this.handleClick = this.handleClick.bind(this);
     this.handleReport = this.handleReport.bind(this);
     this.handleCongrats = this.handleCongrats.bind(this);
@@ -108,6 +109,7 @@ class App extends Component {
     //alert(screen);
     switch(screen) {
       case 'login' : return <Login onClick={this.handleLogin}/>;
+      case 'register' : return <Register onClick={this.handleRegister}/>;
       case 'repetition' : return <RepCount reps={this.getReps()} test={this.isTest()} onClick={this.handleClick}/>;
       case 'rest' : return <Rest restTime={this.getRestTime()} onTimer={this.nextRep}/>;
       case 'report' : return <Report onClick={this.handleReport}/>;
