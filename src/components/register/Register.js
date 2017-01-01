@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
-//import './Register.css';
+import './Register.css';
 import $ from 'jquery';
 
 
@@ -12,23 +12,60 @@ class Login extends React.Component {
     super();
     this.state = {login : ''
       , password : ''
+      , password2 : ''
       , email : ''
       , loginHelp : ''
       , passwordHelp : ''
       , password2Help : ''
+      , msg : 'prestine'
     };
     this.handleChange = this.handleChange.bind(this);
     this.checkCredentials = this.checkCredentials.bind(this);
+    this.passwordsMatch = this.passwordsMatch.bind(this);
+    this.validateLogin = this.validateLogin.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
+    this.allCredAreOk = this.allCredAreOk.bind(this);
     }
+
+  //prestine = {login : true, password : true, password2 : true};
+  // prestine.login = true;
+  // prestine.password = true;
+  // prestine.password2 = true;
+
+
+  validateLogin() {
+    if(this.state.login.length === 0) return null;
+    if(this.state.login.length > 0) return 'success'
+  }
+  
+
+  validatePassword() {
+    if(this.state.password === this.state.password2 && this.state.password.length === 0) {
+        return null;
+      }
+    if(this.state.password === this.state.password2 && this.state.password.length > 0) {
+      return 'success';
+    }
+    else {
+      alert('bad');
+      return 'error';
+    }
+  }
+
+  allCredAreOk() {
+    return this.validatePassword() === 'success' && this.validateLogin() === 'success' ? true : false;
+  }
 
 
   getValidationState(param) {
     const length = this.state[param].length;
-    if (length > 0) return 'success';
+    if (length > 0 ) return 'success';
     else return 'error';
   }
 
   handleChange(e) {
+    //alert(e.target.name);
+    //this.prestine[e.target.name] = false;
     let temp = {};
     temp[e.target.name] = e.target.value;
     this.setState(temp);
@@ -36,15 +73,9 @@ class Login extends React.Component {
 
   checkCredentials(e) {
 
-    //alert('enterede checkCredentials');
+    const that = this;
 
-    //e.preventDefault();
-
-    //const that = this;
-
-    //alert(this.state.login);
-
-    const credentials = { login : this.state.login, password : this.state.password };
+    const credentials = { login : that.state.login, password : that.state.password };
 
     $.ajax({
       type: "POST",
@@ -52,11 +83,23 @@ class Login extends React.Component {
       data: JSON.stringify(credentials),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: function(data){alert(data);},
+      success: function(data){that.setState({msg : "ok"});},
       failure: function(errMsg) {
-          alert(errMsg);
+          that.setState({msg : "not ok"});
       }
     });
+  }
+
+  passwordsMatch()
+  {
+    if (this.state.password === this.state.password2) {
+      this.setState({password2Help : 'введенные пароли должны совпадать'});
+      return 'error';
+    }
+    else {
+      this.setState({password2Help : ''});
+      return 'success';
+    }
   }
 
 
@@ -69,7 +112,7 @@ class Login extends React.Component {
       <Form>
         <FormGroup
           controlId="formBasicText1"
-          validationState={this.getValidationState('login')}
+          validationState={this.validateLogin()}
         >
           <ControlLabel>Логин</ControlLabel>
           <FormControl
@@ -78,12 +121,13 @@ class Login extends React.Component {
             value={this.state.login}
             autoFocus="true"
             onChange={this.handleChange}
+            onBlur={this.checkCredentials}
           />
           <HelpBlock>{this.state.loginHelp}</HelpBlock>
         </FormGroup>
         <FormGroup
           controlId="formBasicText2"
-          validationState={this.getValidationState('password')}
+          validationState={this.validatePassword()}
         >
           <ControlLabel>Пароль</ControlLabel>
           <FormControl
@@ -105,12 +149,14 @@ class Login extends React.Component {
             bsStyle="success"
             bsSize="large"
             block
-            onClick={this.checkCredentials}>
+            active={this.allCredAreOk()}
+            >
               Начать
           </Button>
         </FormGroup>
       </Form>
     </div>
+
       
     );
   }
@@ -119,3 +165,4 @@ class Login extends React.Component {
 
 
 export default Login;
+//onClick={this.checkCredentials()}
