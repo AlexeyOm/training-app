@@ -47,13 +47,13 @@ class Login extends React.Component {
       return 'success';
     }
     else {
-      alert('bad');
+      //alert('bad');
       return 'error';
     }
   }
 
   allCredAreOk() {
-    return this.validatePassword() === 'success' && this.validateLogin() === 'success' ? true : false;
+    return this.validatePassword() === 'success' && this.validateLogin() === 'success' ? false : false;
   }
 
 
@@ -102,6 +102,10 @@ class Login extends React.Component {
     }
   }
 
+  okDisabled() {
+    return !(this.validatePassword() === 'success' && this.validateLogin() === 'success');
+  }
+
 
   render () {
     return (
@@ -144,12 +148,14 @@ class Login extends React.Component {
             value={this.state.password2}
             onChange={this.handleChange}
           />
-          <HelpBlock>{this.state.password2Help}</HelpBlock>
+          <div hidden={this.state.password === this.state.password2}>
+            <HelpBlock>Пароли должны совпадать</HelpBlock>
+          </div>
           <Button
             bsStyle="success"
             bsSize="large"
             block
-            active={this.allCredAreOk()}
+            disabled={this.okDisabled()}
             >
               Начать
           </Button>
