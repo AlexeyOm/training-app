@@ -25,6 +25,7 @@ class Login extends React.Component {
     this.validateLogin = this.validateLogin.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
     this.allCredAreOk = this.allCredAreOk.bind(this);
+    this.register = this.register.bind(this);
     }
 
   //prestine = {login : true, password : true, password2 : true};
@@ -106,6 +107,29 @@ class Login extends React.Component {
     return !(this.validatePassword() === 'success' && this.validateLogin() === 'success');
   }
 
+  register(event) {
+    console.log(event.target.form.login.value);
+
+    const that = this;
+
+    const credentials = { login : that.state.login, password : that.state.password };
+
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:3000/api/register/",
+      data: JSON.stringify(credentials),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){console.log('ok');},
+      failure: function(errMsg) {
+          console.log('not ok');
+      }
+    });
+
+
+    this.props.handleRegister(event);
+  }
+
 
   render () {
     return (
@@ -156,8 +180,9 @@ class Login extends React.Component {
             bsSize="large"
             block
             disabled={this.okDisabled()}
+            onClick={this.register}
             >
-              Начать
+            Начать
           </Button>
         </FormGroup>
       </Form>

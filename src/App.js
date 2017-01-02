@@ -34,6 +34,7 @@ class App extends Component {
     this.handleCongrats = this.handleCongrats.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.nextRep = this.nextRep.bind(this);
+    this.handleRegister = this.handleRegister.bind(this);
     }
 
   componentDidMount() {
@@ -104,12 +105,17 @@ class App extends Component {
   isFinalSet(){
     return this.state.set === this.state.workout.length - 1; 
   }
+
+  handleRegister(event) {
+    //console.log(event.target.form.login.value);
+    console.log(event.target.form.password.value);
+  }
   
   renderScreen(screen) {
     //alert(screen);
     switch(screen) {
       case 'login' : return <Login onClick={this.handleLogin}/>;
-      case 'register' : return <Register onClick={this.handleRegister}/>;
+      case 'register' : return <Register handleRegister={this.handleRegister}/>;
       case 'repetition' : return <RepCount reps={this.getReps()} test={this.isTest()} onClick={this.handleClick}/>;
       case 'rest' : return <Rest restTime={this.getRestTime()} onTimer={this.nextRep}/>;
       case 'report' : return <Report onClick={this.handleReport}/>;
