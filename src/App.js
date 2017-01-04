@@ -28,7 +28,7 @@ class App extends Component {
   constructor() {
     super();
     
-    this.state = {serverReply: [], screen : '', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
+    this.state = {serverReply: [], screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
     this.handleClick = this.handleClick.bind(this);
     this.handleReport = this.handleReport.bind(this);
     this.handleCongrats = this.handleCongrats.bind(this);
@@ -39,27 +39,39 @@ class App extends Component {
 
   componentDidMount() {
     
-    localStorage.token = '';
+    // localStorage.token = '';
 
-    if(!localStorage.token) {
-      this.setState({screen : 'login'});      
-    }
-    else {
-      if(localStorage.workout) {
-        this.setState({workout : JSON.parse(localStorage.workout)}, screen : 'repetition');
-      }
-    }
+    // if(!localStorage.token) {
+    //   this.setState({screen : 'login'});      
+    // }
+    // else {
+    //   if(localStorage.workout) {
+    //     this.setState({workout : JSON.parse(localStorage.workout)}, screen : 'repetition');
+    //   }
+    // }
 
-    const token = localStorage.token;
-    console.log(token);
+    // const token = localStorage.token;
+    // console.log(token);
     //alert(token);
 
+    // $.ajaxSetup({
+    //   xhrFields: {
+    //     withCredentials: true
+    //   }
+    // });
+
+    document.cookie = "user_id=test_user";
+
     const that = this;
-    $.get(baseUrl, function(result) {
-      that.setState({
-        workout: result
-      });
+    $.get(baseUrl,
+      'user_id=test_user',
+      function(result) {
+        that.setState({
+          workout: result
+        });
     });
+
+    alert(document.cookie);
 
     
   }
