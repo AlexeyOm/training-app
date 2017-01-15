@@ -28,7 +28,7 @@ class App extends Component {
   constructor() {
     super();
     
-    this.state = {serverReply: [], screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
+    this.state = {token : '', screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
     this.handleClick = this.handleClick.bind(this);
     this.handleReport = this.handleReport.bind(this);
     this.handleCongrats = this.handleCongrats.bind(this);
@@ -60,18 +60,35 @@ class App extends Component {
     //   }
     // });
 
-    document.cookie = "user_id=test_user";
+    this.setState({token : "SoMeToKeN"});
 
     const that = this;
-    $.get(baseUrl,
-      'user_id=test_user',
-      function(result) {
-        that.setState({
-          workout: result
-        });
-    });
 
-    alert(document.cookie);
+    $.ajax({
+      url : baseUrl,
+      headers : {token : "SoMeToKeN/"}
+      }).done(function(result) {
+        console.log(result);
+        if(result === 'auth_required') {
+          console.log('going to login');
+          that.setState({screen : 'login'});
+        }
+        else {
+          that.setState({workout : result});
+        }
+      }).fail(function() {
+        that.setState({screen : 'error'});
+      });
+
+    // $.get(baseUrl,
+    //   'user_id=test_user',
+    //   function(result) {
+    //     that.setState({
+    //       workout: result
+    //     });
+    // });
+
+    //alert(document.cookie);
 
     
   }
@@ -110,8 +127,25 @@ class App extends Component {
     }
   }
 
-  handleLogin(event) {
+  handleLogin(login = '', password = '') {
     //todo делать что-то по нажатию кнопки "логин"
+    const that = this;
+
+    const credentials = { login, password };
+
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:3000/api/login/",
+      data: JSON.stringify(credentials),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data) {
+        //that.props.handleLogin(data);
+      },
+      failure: function(errMsg) {
+          alert(errMsg);
+      }
+    });
   }
   
   handleCongrats(event) {
@@ -142,7 +176,7 @@ class App extends Component {
   renderScreen(screen) {
     //alert(screen);
     switch(screen) {
-      case 'login' : return <Login onClick={this.handleLogin}/>;
+      case 'login' : return <Login handleLogin={this.handleLogin}/>;
       case 'register' : return <Register handleRegister={this.handleRegister}/>;
       case 'repetition' : return <RepCount reps={this.getReps()} test={this.isTest()} onClick={this.handleClick}/>;
       case 'rest' : return <Rest restTime={this.getRestTime()} onTimer={this.nextRep}/>;

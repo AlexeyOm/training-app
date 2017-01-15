@@ -12,7 +12,7 @@ class Login extends React.Component {
     super();
     this.state = {login : '', password : '', correctCredentials : false};
     this.handleChange = this.handleChange.bind(this);
-    this.checkCredentials = this.checkCredentials.bind(this);
+    //this.checkCredentials = this.checkCredentials.bind(this);
     }
 
 
@@ -28,30 +28,34 @@ class Login extends React.Component {
     this.setState(temp);
   }
 
-  checkCredentials(e) {
+  // checkCredentials(e) {
 
-    //alert('enterede checkCredentials');
+  //   //alert('enterede checkCredentials');
 
-    //e.preventDefault();
+  //   //e.preventDefault();
 
-    //const that = this;
+  //   //const that = this;
 
-    //alert(this.state.login);
+  //   //alert(this.state.login);
 
-    const credentials = { login : this.state.login, password : this.state.password };
+  //   const that = this;
 
-    $.ajax({
-      type: "POST",
-      url: "http://localhost:3000/api/login/",
-      data: JSON.stringify(credentials),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(data){alert(data);},
-      failure: function(errMsg) {
-          alert(errMsg);
-      }
-    });
-  }
+  //   const credentials = { login : this.state.login, password : this.state.password };
+
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "http://localhost:3000/api/login/",
+  //     data: JSON.stringify(credentials),
+  //     contentType: "application/json; charset=utf-8",
+  //     dataType: "json",
+  //     success: function(data) {
+  //       that.props.handleLogin(data);
+  //     },
+  //     failure: function(errMsg) {
+  //         alert(errMsg);
+  //     }
+  //   });
+  // }
 
 
   render () {
@@ -89,7 +93,7 @@ class Login extends React.Component {
             bsStyle="success"
             bsSize="large"
             block
-            onClick={this.checkCredentials}>
+            onClick={this.props.handleLogin(this.state.login, this.state.password)}>
               Начать
           </Button>
         </FormGroup>
