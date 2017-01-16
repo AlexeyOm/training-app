@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
+import { Button, Form, FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
 import './Login.css';
 import $ from 'jquery';
 
@@ -77,6 +77,7 @@ class Login extends React.Component {
             autoFocus="true"
             onChange={this.handleChange}
           />
+          <HelpBlock>{this.props.error}</HelpBlock>
         </FormGroup>
         <FormGroup
           controlId="formBasicText2"
@@ -93,7 +94,7 @@ class Login extends React.Component {
             bsStyle="success"
             bsSize="large"
             block
-            onClick={this.props.handleLogin(this.state.login, this.state.password)}>
+            onClick={() => this.props.handleLogin(this.state.login, this.state.password)}>
               Начать
           </Button>
         </FormGroup>
