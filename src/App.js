@@ -13,6 +13,7 @@ require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
 const baseUrl = 'http://localhost:3000/api/users/';
+const reportUrl = 'http://localhost:3000/api/report/'
 
 // async function getTraining(day) {
 //   const response = await fetch(baseUrl + '?day=' + day);
@@ -183,6 +184,25 @@ class App extends Component {
   
   handleCongrats(event) {
     //todo делать что-то по завершению тренировки
+    const that = this;
+    $.ajax({
+      url : reportUrl,
+      headers : {token : that.state.token},
+      async : false,
+      data : {result : [1,2,3,4]}
+      }).done(function(result) {
+        console.log(result);
+        if(result === 'auth_required') {
+          console.log('going to login');
+          that.setState({screen : 'login'});
+        }
+        else {
+          that.setState({workout : result, screen : 'error'});
+        }
+      }).fail(function() {
+        that.setState({screen : 'error'});
+      });
+
   }
   
   getReps(){

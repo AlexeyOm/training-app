@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
 import './Login.css';
-import $ from 'jquery';
+//import $ from 'jquery';
 
 
 //const baseUrl = 'http://localhost:3000/api/login/';
