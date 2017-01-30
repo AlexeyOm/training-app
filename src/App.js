@@ -29,7 +29,13 @@ class App extends Component {
   constructor() {
     super();
     
-    this.state = {error : '', token : '', screen : 'repetition', set : 0, workout : [{reps : 5, rest : 2},{reps : 10, rest : 2},{reps : 15, rest : 2},{reps : 20, report: true}]};
+    this.state = {result : [],
+                  error : '',
+                  token : '',
+                  screen : 'repetition',
+                  set : 0,
+                  workout : [{}]
+                 };
     this.handleClick = this.handleClick.bind(this);
     this.handleReport = this.handleReport.bind(this);
     this.handleCongrats = this.handleCongrats.bind(this);
@@ -120,6 +126,9 @@ class App extends Component {
   handleClick(event) {
     if(event.target.dataset.success === "1") {
       if(!this.isFinalSet()) {
+        this.setState(prevState => ({
+          result : prevState.result.concat(this.getReps())
+        }));
         this.setState({screen: 'rest'});
       }
       else {
@@ -141,7 +150,11 @@ class App extends Component {
   }
   
   handleReport(event) {
+    event.persist();
     //todo обработка репорта о подходе. записать в базу
+    this.setState(prevState => ({
+          result : prevState.result.concat(parseInt(event.target.form.repnum.value,10))
+    }));
     if(this.isFinalSet()) {
       this.setState({screen: 'congrats'});
     }
@@ -189,7 +202,7 @@ class App extends Component {
       url : reportUrl,
       headers : {token : that.state.token},
       async : false,
-      data : {result : [1,2,3,4]}
+      data : {result : that.state.result}
       }).done(function(result) {
         console.log(result);
         if(result === 'auth_required') {
